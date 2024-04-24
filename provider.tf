@@ -8,10 +8,10 @@ terraform {
   }
   # Angaben zu den Ressourcen für GitActions
   backend "azurerm" {
-    resource_group_name = "tfstateprovidermock"
+    resource_group_name  = "tfstateprovidermock"
     storage_account_name = "tfcodeprovidermock"
-    container_name = "tfstatefile"
-    key = "terraform.tfstate"
+    container_name       = "tfstatefile"
+    key                  = "terraform.tfstate"
   }
 }
 

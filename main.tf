@@ -8,8 +8,8 @@ locals {
 
 resource "azurerm_resource_group" "providermock" {
   name     = "providermock"
-  location = "germanywestcentral"
-
+  location = var.region_location
+  #germanywestcentral
   tags = local.default_tags
 }
 
