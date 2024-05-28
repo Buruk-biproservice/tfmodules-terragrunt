@@ -1,13 +1,24 @@
+locals {
+  default_tags = {
+    environment = "dev"
+    owner       = "kamil.buruk@bipro-service.gmbh"
+    created_by  = "terraform"
+  }
+}
+module "infrastructure" {
+  source = "../infrastructure"
+  region_location = "germanywestcentral"
+}
 # Container App erzeugen für Providermock [Converter]
 resource "azurerm_container_app" "providermockapp-Converter" {
-  name                         = "biproconverter1" # evtl. Variable daraus machen
-  container_app_environment_id = azurerm_container_app_environment.providermock-app-env.id
-  resource_group_name          = azurerm_resource_group.providermock.name
+  name                         = var.convname # evtl. Variable daraus machen
+  container_app_environment_id = module.infrastructure.azurerm_container_app_environment.providermock-app-env.id
+  resource_group_name          = module.infrastructure.azurerm_resource_group.providermock.name
   revision_mode                = "Single"
  # Secretsbenutzen
   registry {
-    server               = azurerm_container_registry.acr.login_server
-    username             = azurerm_container_registry.acr.name
+    server               = module.infrastructure.azurerm_container_registry.acr.login_server
+    username             = module.infrastructure.azurerm_container_registry.acr.name
     password_secret_name = "containerregistrybiproazurecriopass"
   }
   ingress {
