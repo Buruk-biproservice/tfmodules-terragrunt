@@ -47,8 +47,8 @@ resource "azurerm_role_assignment" "acr" {
   principal_id         = "5056f103-616c-4b26-91c4-6cecb18a0002"
 }
 
-resource "azurerm_container_app_environment" "providermock-app-env" {
-  name                       = "providermock-app-env"
+resource "azurerm_container_app_environment" "providermock-app-env" { #muss evtl durch variable ersetzt werden
+  name                       = var.containerapp_environment #"providermock-app-env" #
   location                   = azurerm_resource_group.providermock.location
   resource_group_name        = azurerm_resource_group.providermock.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.providermock-la-ws.id

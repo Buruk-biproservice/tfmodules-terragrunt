@@ -8,17 +8,19 @@ locals {
 module "infrastructure" {
   source = "../infrastructure"
   region_location = "germanywestcentral"
+  containerapp_environment = "providermock-app-env" #evtl. falsch???
 }
+
 # Container App erzeugen für Providermock [Converter]
 resource "azurerm_container_app" "providermockapp-Converter" {
-  name                         = var.convname # evtl. Variable daraus machen
-  container_app_environment_id = module.infrastructure.azurerm_container_app_environment.providermock-app-env.id
-  resource_group_name          = module.infrastructure.azurerm_resource_group.providermock.name
+  name                         = var.convname 
+  container_app_environment_id = var.container_app_environment_id #muss evtl. durch variable ersetzt werden
+  resource_group_name          = var.ressource_group_name
   revision_mode                = "Single"
  # Secretsbenutzen
   registry {
-    server               = module.infrastructure.azurerm_container_registry.acr.login_server
-    username             = module.infrastructure.azurerm_container_registry.acr.name
+    server               = var.container_registry_login_server
+    username             = var.container_registry_name
     password_secret_name = "containerregistrybiproazurecriopass"
   }
   ingress {
@@ -42,7 +44,7 @@ resource "azurerm_container_app" "providermockapp-Converter" {
   }
   secret {# TO DO Secrets benutzen
     name  = "containerregistrybiproazurecriopass"
-    value = var.registry_secret
+    value = "rGSAi+YRomxytwts3bP9Xn2pC0e/AG1eZZG6HY6Su0+ACRAwEqo+" #Github = var.registry_secret
   }
   tags = local.default_tags
 }
